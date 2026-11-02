@@ -1,8 +1,16 @@
 #!/bin/bash
 
-running=true
+SCRIPT_DIR="$(cd -- "$(dirname -- "$0")" && pwd)"
 
-while [ "$running" = true ]; do
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/lib/common.sh"
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/lib/check_dependencies.sh"
+
+
+RUNNING=true
+
+while [ "$RUNNING" = true ]; do
 
 echo "---------------------------------------"
 echo "1) Check installed dependencies"
@@ -11,26 +19,27 @@ echo "3) Quit"
 echo "---------------------------------------"
 
 
-read -r -p "Welcome to the Terraform and ansible initaliser, what would you like to do? " input
+read -r -p "Welcome to the Terraform and ansible initaliser, what would you like to do? " INPUT
 
 
-case $input in
+case $INPUT in
 
 1)
-echo "Installing dependencies..."
+log "Checking dependencies"
+check_dependencies
 ;;
 
 2)
-echo "Installing Terraform bootstrap..."
+log "Installing Terraform bootstrap"
 ;;
 
 3)
-running=false
-echo "Quitting..."
+RUNNING=false
+echo "Quitting"
 ;;
 
 *)
-echo "Invalid choice"
+warn "Invalid choice"
 
 esac
 
