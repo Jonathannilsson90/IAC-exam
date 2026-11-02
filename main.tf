@@ -3,8 +3,8 @@ provider "local" {}
 resource "local_file" "bootstrap_dockerfile" {
 filename = "${path.module}/dockerfile"
 content = <<-EOF
-FROM alpine:latest
-CMD ["/bin/ash"]
+FROM ubuntu:latest
+CMD ["sleep", "infinity"]
 EOF
 }
 
@@ -19,6 +19,16 @@ services:
         build:
             context: .
             dockerfile: dockerfile
-        restart: always
+        networks:
+            vpcbr:
+                ipv4_address: 10.5.0.5
+
+networks:
+    vpcbr:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 10.5.0.0/16
+                  gateway: 10.5.0.1      
   EOF
 }
