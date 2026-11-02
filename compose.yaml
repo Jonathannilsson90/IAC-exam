@@ -1,0 +1,8 @@
+services:
+    ubuntu-image:
+        container_name: "Ubuntu-container"
+        hostname: "Ubuntu"
+        build:
+            context: .
+            dockerfile: dockerfile
+        restart: always
