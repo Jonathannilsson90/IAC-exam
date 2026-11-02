@@ -1,49 +1,25 @@
-provider "local" {}
 
-resource "local_file" "bootstrap_dockerfile" {
-filename = "${path.module}/dockerfile"
-content = <<-EOF
-FROM ubuntu:latest
-CMD ["sleep", "infinity"]
-EOF
-}
-
-resource "local_file" "bootstrap_dockercompose" {
-  filename = "${path.module}/compose.yaml"
-  depends_on = [ local_file.bootstrap_dockerfile ]
-  content = <<-EOF
-services:
-    ubuntu-image:
-        container_name: "Ubuntu-container"
-        hostname: "Ubuntu"
-        build:
-            context: .
-            dockerfile: dockerfile
-        networks:
-            vpcbr:
-                ipv4_address: 10.5.0.5
-
-networks:
-    vpcbr:
-        driver: bridge
-        ipam:
-            config:
-                - subnet: 10.5.0.0/16
-                  gateway: 10.5.0.1      
-  EOF
-}
-
-resource "null_resource" "start_docker" {
-    depends_on = [ local_file.bootstrap_dockercompose ]
-  provisioner "local-exec" {
-    command = "docker compose -f ${path.module}/compose.yaml up -d --build"
+terraform {
+  required_providers {
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "~> 4.2.0"
+    }
   }
 }
 
-resource "terraform_data" "cleanup" {
-    depends_on = [ null_resource.start_docker ]
-  provisioner "local-exec" {
-    when = destroy
-    command = "docker compose -f ${path.module}/compose.yaml down"
+provider "docker" {}
+
+resource "docker_image" "nginx" {
+  name         = "nginx:latest"
+  keep_locally = false
+}
+
+resource "docker_container" "nginx" {
+  image = docker_image.nginx.image_id
+  name  = var.container_name
+  ports {
+    internal = 80
+    external = 8080
   }
 }
