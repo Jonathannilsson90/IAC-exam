@@ -14,8 +14,9 @@ while [ "$RUNNING" = true ]; do
 
 echo "---------------------------------------"
 echo "1) Check installed dependencies"
-echo "2) Install Terraform"
-echo "3) Quit"
+echo "2) Initalize Terraform"
+echo "3) Destroy Terraform"
+echo "4) Quit"
 echo "---------------------------------------"
 
 
@@ -31,11 +32,18 @@ check_dependencies
 
 2)
 log "Installing Terraform bootstrap"
+terraform init 
+terraform apply -auto-approve
 ;;
 
 3)
+log "Destroying terraform provision"
+terraform destroy -auto-approve
+;;
+
+4)
 RUNNING=false
-echo "Quitting"
+log "Quitting"
 ;;
 
 *)

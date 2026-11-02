@@ -4,7 +4,7 @@ resource "local_file" "bootstrap_dockerfile" {
 filename = "${path.module}/dockerfile"
 content = <<-EOF
 FROM alpine:latest
-CMD ["bash"]
+CMD ["/bin/ash"]
 EOF
 }
 
