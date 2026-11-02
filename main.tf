@@ -32,3 +32,18 @@ networks:
                   gateway: 10.5.0.1      
   EOF
 }
+
+resource "null_resource" "start_docker" {
+    depends_on = [ local_file.bootstrap_dockercompose ]
+  provisioner "local-exec" {
+    command = "docker compose -f ${path.module}/compose.yaml up -d --build"
+  }
+}
+
+resource "terraform_data" "cleanup" {
+    depends_on = [ null_resource.start_docker ]
+  provisioner "local-exec" {
+    when = destroy
+    command = "docker compose -f ${path.module}/compose.yaml down"
+  }
+}
