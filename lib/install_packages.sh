@@ -1,12 +1,12 @@
 #!/bin/bash
-SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+LIB_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
 # shellcheck disable=SC1091
-source "$SCRIPT_DIR/common.sh"
+source "$LIB_DIR/common.sh"
 # shellcheck disable=SC1091
-source "$SCRIPT_DIR/install/install_docker.sh"
+source "$LIB_DIR/install/install_docker.sh"
 # shellcheck disable=SC1091
-source "$SCRIPT_DIR/install/install_terraform.sh"
+source "$LIB_DIR/install/install_terraform.sh"
 
 
 
