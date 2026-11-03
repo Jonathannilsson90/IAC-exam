@@ -31,3 +31,4 @@ resource "docker_container" "nginx" {
     read_only = true
   }
 }
+

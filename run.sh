@@ -32,12 +32,23 @@ check_dependencies
 
 2)
 log "Installing Terraform bootstrap"
+mkdir -p logs/
+
+export TF_LOG=DEBUG
+export TF_LOG_PATH="./logs/terraform.log"
+
 terraform init 
 terraform apply -auto-approve
 ;;
 
 3)
 log "Destroying terraform provision"
+
+mkdir -p logs/
+
+export TF_LOG=DEBUG
+export TF_LOG_PATH="./logs/terraform.log"
+
 terraform destroy -auto-approve
 ;;
 
