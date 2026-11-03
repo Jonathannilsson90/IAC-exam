@@ -10,6 +10,7 @@ source "$SCRIPT_DIR/lib/check_dependencies.sh"
 
 RUNNING=true
 
+
 while [ "$RUNNING" = true ]; do
 
 echo "---------------------------------------"
@@ -34,8 +35,12 @@ check_dependencies
 log "Installing Terraform bootstrap"
 mkdir -p logs/
 
-export TF_LOG=DEBUG
-export TF_LOG_PATH="./logs/terraform.log"
+
+LOG_FILE="./logs/terraform-$(date +%Y%m%d-%H%M%S).log"
+
+export TF_LOG_CORE=WARN
+export TF_LOG_PROVIDER=INFO
+export TF_LOG_PATH="$LOG_FILE"
 
 terraform init 
 terraform apply -auto-approve
@@ -46,8 +51,11 @@ log "Destroying terraform provision"
 
 mkdir -p logs/
 
-export TF_LOG=DEBUG
-export TF_LOG_PATH="./logs/terraform.log"
+LOG_FILE="./logs/terraform-$(date +%Y%m%d-%H%M%S).log"
+
+export TF_LOG_CORE=WARN
+export TF_LOG_PROVIDER=INFO
+export TF_LOG_PATH="$LOG_FILE"
 
 terraform destroy -auto-approve
 ;;

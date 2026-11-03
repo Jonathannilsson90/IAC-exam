@@ -23,6 +23,9 @@ ansible)
 docker)
     install_docker
     ;;
+python3)
+    sudo -v | sudo apt install -y python3
+    ;;
 
 *)
 warn "No such package found"
