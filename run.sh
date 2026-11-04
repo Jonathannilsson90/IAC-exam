@@ -38,11 +38,11 @@ while [ "$RUNNING" = true ]; do
     log "Installing Terraform bootstrap"
     mkdir -p logs/
 
-    LOG_FILE="./logs/terraform-$(date +%Y%m%d-%H%M%S).log"
+    LOG_FILE_APPLY="./logs/terraform-apply$(date +%Y%m%d-%H%M%S).log"
 
     export TF_LOG_CORE=WARN
     export TF_LOG_PROVIDER=INFO
-    export TF_LOG_PATH="$LOG_FILE"
+    export TF_LOG_PATH="$LOG_FILE_APPLY"
 
     terraform -chdir="$INFRA_DIR" init || return
     terraform -chdir="$INFRA_DIR" apply -auto-approve
@@ -50,6 +50,13 @@ while [ "$RUNNING" = true ]; do
 
   3)
     log "Destroying terraform provision"
+    mkdir -p logs/
+
+    LOG_FILE_DESTROY="./logs/terraform-destroy$(date +%Y%m%d-%H%M%S).log"
+    
+    export TF_LOG_CORE=WARN
+    export TF_LOG_PATH="$LOG_FILE_DESTROY"
+
 
     terraform -chdir="$INFRA_DIR" destroy -auto-approve
     ;;
