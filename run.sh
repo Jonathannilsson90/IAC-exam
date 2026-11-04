@@ -1,73 +1,74 @@
 #!/bin/bash
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "$0")" && pwd)"
+INFRA_DIR="$SCRIPT_DIR/infra"
 
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/lib/common.sh"
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/lib/check_dependencies.sh"
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/lib/ensure_venv.sh"
 
+file "$SCRIPT_DIR/lib/ensure_venv.sh"
 
 RUNNING=true
 
-
 while [ "$RUNNING" = true ]; do
 
-echo "---------------------------------------"
-echo "1) Check installed dependencies"
-echo "2) Initalize Terraform"
-echo "3) Destroy Terraform"
-echo "4) Quit"
-echo "---------------------------------------"
+  echo "---------------------------------------"
+  echo "1) Check installed dependencies"
+  echo "2) Initalize Terraform"
+  echo "3) Destroy Terraform"
+  echo "4) Deploy Ansible configuration"
+  echo "5) Run Pytest for containers"
+  echo "q) Quit"
+  echo "---------------------------------------"
 
+  read -r -p "Welcome to the Terraform and ansible initaliser, what would you like to do? " INPUT
 
-read -r -p "Welcome to the Terraform and ansible initaliser, what would you like to do? " INPUT
+  case $INPUT in
 
+  1)
+    log "Checking dependencies"
+    check_dependencies
+    ;;
 
-case $INPUT in
+  2)
+    log "Installing Terraform bootstrap"
+    mkdir -p logs/
 
-1)
-log "Checking dependencies"
-check_dependencies
-;;
+    LOG_FILE="./logs/terraform-$(date +%Y%m%d-%H%M%S).log"
 
-2)
-log "Installing Terraform bootstrap"
-mkdir -p logs/
+    export TF_LOG_CORE=WARN
+    export TF_LOG_PROVIDER=INFO
+    export TF_LOG_PATH="$LOG_FILE"
 
+    terraform -chdir="$INFRA_DIR" init || return
+    terraform -chdir="$INFRA_DIR" apply -auto-approve
+    ;;
 
-LOG_FILE="./logs/terraform-$(date +%Y%m%d-%H%M%S).log"
+  3)
+    log "Destroying terraform provision"
 
-export TF_LOG_CORE=WARN
-export TF_LOG_PROVIDER=INFO
-export TF_LOG_PATH="$LOG_FILE"
+    terraform -chdir="$INFRA_DIR" destroy -auto-approve
+    ;;
 
-terraform init 
-terraform apply -auto-approve
-;;
+  4) ;;
 
-3)
-log "Destroying terraform provision"
+  5)
+    ensure_venv
+    ;;
 
-mkdir -p logs/
+  q)
+    RUNNING=false
+    log "Quitting"
+    ;;
 
-LOG_FILE="./logs/terraform-$(date +%Y%m%d-%H%M%S).log"
+  *)
+    warn "Invalid choice"
+    ;;
 
-export TF_LOG_CORE=WARN
-export TF_LOG_PROVIDER=INFO
-export TF_LOG_PATH="$LOG_FILE"
-
-terraform destroy -auto-approve
-;;
-
-4)
-RUNNING=false
-log "Quitting"
-;;
-
-*)
-warn "Invalid choice"
-
-esac
+  esac
 
 done

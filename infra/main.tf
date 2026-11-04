@@ -26,7 +26,7 @@ resource "docker_container" "nginx" {
     protocol = "tcp"
   }
   volumes {
-    host_path = abspath("${path.module}/html")
+    host_path = abspath("${path.module}/../html")
     container_path = "/usr/share/nginx/html"
     read_only = true
   }

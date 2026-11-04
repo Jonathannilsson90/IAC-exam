@@ -8,28 +8,27 @@ source "$LIB_DIR/install/install_docker.sh"
 # shellcheck disable=SC1091
 source "$LIB_DIR/install/install_terraform.sh"
 
-
-
 install_packages() {
-local PACKAGE="$1"
+  local PACKAGE="$1"
 
-case $PACKAGE in
-terraform)
+  case $PACKAGE in
+  terraform)
     install_terraform
     ;;
-ansible)
-     sudo -v | sudo apt install -y ansible
+  ansible)
+    sudo -v | sudo apt install -y ansible
     ;;
-docker)
+  docker)
     install_docker
     ;;
-python3)
+  python3)
     sudo -v | sudo apt install -y python3
     ;;
 
-*)
-warn "No such package found"
+  *)
+    warn "No such package found"
+    ;;
 
-esac
+  esac
 
 }
