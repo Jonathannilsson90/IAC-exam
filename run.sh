@@ -10,7 +10,6 @@ source "$SCRIPT_DIR/lib/check_dependencies.sh"
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/lib/ensure_venv.sh"
 
-file "$SCRIPT_DIR/lib/ensure_venv.sh"
 
 RUNNING=true
 
@@ -53,10 +52,9 @@ while [ "$RUNNING" = true ]; do
     mkdir -p logs/
 
     LOG_FILE_DESTROY="./logs/terraform-destroy$(date +%Y%m%d-%H%M%S).log"
-    
+
     export TF_LOG_CORE=WARN
     export TF_LOG_PATH="$LOG_FILE_DESTROY"
-
 
     terraform -chdir="$INFRA_DIR" destroy -auto-approve
     ;;
@@ -65,6 +63,7 @@ while [ "$RUNNING" = true ]; do
 
   5)
     ensure_venv
+    pytest -s --tb=short
     ;;
 
   q)
