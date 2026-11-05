@@ -10,5 +10,5 @@ def test_URL():
     except:
         assert False, "Server is not running"
     finally:
-        print("Server tests ran successfully")
+        print("Server tests ended successfully")
 
