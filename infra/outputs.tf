@@ -12,3 +12,8 @@ output "docker_name" {
 description = "Container name"
 value = docker_container.nginx.name
 }
+
+output "url" {
+description = "Container IP on the Docker container"
+value = var.container_ip
+}

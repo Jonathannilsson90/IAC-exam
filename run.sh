@@ -46,7 +46,12 @@ while [ "$RUNNING" = true ]; do
 
     terraform -chdir="$INFRA_DIR" init || return
     terraform -chdir="$INFRA_DIR" apply -auto-approve
+
+    ip="$(terraform -chdir="$INFRA_DIR" output -raw url)"
+    log "Container deployed with IP: $ip"
+    echo "Visit web: http://localhost:8080"
     ;;
+
 
   3)
     log "Destroying terraform provision"
