@@ -1,10 +1,18 @@
 #!/bin/bash
 
+# ==============================
+# Directory imports
+# ==============================
 INSTALL_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 LIB_DIR="$(dirname "$INSTALL_DIR")"
 
 # shellcheck disable=SC1091
 source "$LIB_DIR/common.sh"
+
+# ==============================
+# Install function for Docker
+# https://docs.docker.com/engine/install/debian/
+# ==============================
 
 install_docker() {
   # Add Docker's official GPG key:

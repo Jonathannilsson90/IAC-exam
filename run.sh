@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# ==============================
+# Directory imports
+# ==============================
+
 SCRIPT_DIR="$(cd -- "$(dirname -- "$0")" && pwd)"
 readonly SCRIPT_DIR
 INFRA_DIR="$SCRIPT_DIR/infra"
@@ -11,6 +15,11 @@ source "$SCRIPT_DIR/lib/common.sh"
 source "$SCRIPT_DIR/lib/check_dependencies.sh"
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/lib/ensure_venv.sh"
+
+# ==============================
+# Running while-loop for the GUI
+# in the terminal to work
+# ==============================
 
 RUNNING=true
 
@@ -36,6 +45,12 @@ while [ "$RUNNING" = true ]; do
 
   2)
     log "Installing Terraform bootstrap"
+    
+    # ==============================
+    # Bootstraping terraform and
+    # provisioning logs
+    # ==============================
+    
     mkdir -p logs/
 
     LOG_FILE_APPLY="./logs/terraform-apply$(date +%Y%m%d-%H%M%S).log"
@@ -55,6 +70,12 @@ while [ "$RUNNING" = true ]; do
 
   3)
     log "Destroying terraform provision"
+    
+    # ==============================
+    # Destroying 2) bootstrapped terraform
+    # and provisioning logs
+    # ==============================
+    
     mkdir -p logs/
 
     LOG_FILE_DESTROY="./logs/terraform-destroy$(date +%Y%m%d-%H%M%S).log"
@@ -67,10 +88,23 @@ while [ "$RUNNING" = true ]; do
 
   4)
     log "Running Ansible playbook"
+
+    # ==============================
+    # Initializing Ansible playbook
+    # site.yml
+    # ==============================
+
     (cd "$ANSIBLE_DIR" && ansible-playbook site.yml)
     ;;
 
   5)
+    log "Running Pytests"
+
+    # ==============================
+    # Starting pytest and ensuring
+    # .venv exist in root dir
+    # ==============================
+
     ensure_venv
     pytest -s --tb=short
     ;;

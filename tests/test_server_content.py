@@ -1,5 +1,11 @@
 import requests
 
+# ==============================
+# Pytest to ensure that a h1-tag
+# exists on the webpage
+# and a p-tag should not exist
+# ==============================
+
 try:
        res = requests.get("http://localhost:8080", timeout=3)
        assert res.status_code == 200

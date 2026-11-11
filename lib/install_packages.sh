@@ -1,10 +1,21 @@
 #!/bin/bash
+
+# ==============================
+# Directory imports
+# ==============================
+
 LIB_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
 # shellcheck disable=SC1091
 source "$LIB_DIR/install/install_docker.sh"
 # shellcheck disable=SC1091
 source "$LIB_DIR/install/install_terraform.sh"
+
+# ==============================
+# Install packages function
+# Using function install_docker.sh
+# And install_terraform.sh
+# ==============================
 
 install_packages() {
   local PACKAGE="$1"

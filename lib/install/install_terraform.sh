@@ -1,4 +1,10 @@
 #!/bin/bash
+
+# ==============================
+# Install function for Terraform
+# https://developer.hashicorp.com/terraform/install
+# ==============================
+
 install_terraform() {
   sudo -v
   wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg

@@ -1,7 +1,11 @@
 import requests
 
+# ==============================
+# Pytest for testing docker containers
+# connection on localhost:8080
+#
 # https://docs.pytest.org/en/stable/getting-started.html
-
+# ==============================
 
 def test_URL():
     try:

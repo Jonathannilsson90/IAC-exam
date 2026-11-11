@@ -1,3 +1,8 @@
+# ==============================
+# While using Docker as provider
+# additional provider is required
+# https://registry.terraform.io/providers/kreuzwerker/docker/latest/docs
+# ==============================
 
 terraform {
   required_providers {
@@ -8,12 +13,22 @@ terraform {
   }
 }
 
+# ==============================
+# Starting the Docker provider
+# with the latest image from nginx
+# ==============================
+
 provider "docker" {}
 
 resource "docker_image" "nginx" {
   name         = "nginx:latest"
   keep_locally = false
 }
+
+# ==============================
+# Specifying resource for projects
+# Docker container
+# ==============================
 
 resource "docker_container" "nginx" {
   image = docker_image.nginx.image_id

@@ -1,4 +1,8 @@
 #!/bin/bash
+# ==============================
+# Ensure venv is installed for pytest
+# to work in this project
+# ==============================
 
 ensure_venv() {
   local ROOT_DIR

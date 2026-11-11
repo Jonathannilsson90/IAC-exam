@@ -1,10 +1,24 @@
 #!/bin/bash
+
+# ==============================
+# Directory imports
+# ==============================
 PACKAGE_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
 # shellcheck disable=SC1091
 source "$PACKAGE_DIR/install_packages.sh"
 
+# ==============================
+# Specify required packages:
+# Terraform, Ansible, Docker, Python
+# ==============================
+
 REQUIRED_PACKAGES=("terraform" "ansible" "docker" "python3")
+
+# ==============================
+# Check dependencies function
+# Looping through REQUIRED_PACKAGES array
+# ==============================
 
 check_dependencies() {
 

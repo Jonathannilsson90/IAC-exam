@@ -1,5 +1,11 @@
 import subprocess
 
+# ==============================
+# Pytest to unsure that Ansible
+# installed curl on container
+# on localhost:8080
+# ==============================
+
 def test_curl_installed_in_container():
         res = subprocess.run(
         ["docker", "exec", "nginx", "sh", "-c", "command -v curl"],        capture_output=True, text=True,
