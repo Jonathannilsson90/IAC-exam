@@ -5,14 +5,12 @@ readonly SCRIPT_DIR
 INFRA_DIR="$SCRIPT_DIR/infra"
 ANSIBLE_DIR="$SCRIPT_DIR/ansible"
 
-
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/lib/common.sh"
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/lib/check_dependencies.sh"
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/lib/ensure_venv.sh"
-
 
 RUNNING=true
 
@@ -65,7 +63,7 @@ while [ "$RUNNING" = true ]; do
   4)
     log "Running Ansible playbook"
     (cd "$ANSIBLE_DIR" && ansible-playbook site.yml)
-  ;;
+    ;;
 
   5)
     ensure_venv
