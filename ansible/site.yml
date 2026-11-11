@@ -1,0 +1,11 @@
+- hosts: web
+  gather_facts: false
+  tasks:
+    - name: Install Python
+      ansible.builtin.raw: apt-get update && apt-get install -y python3
+
+    - name: Install curl
+      ansible.builtin.apt:
+        name: curl
+        state: present
+        update_cache: true

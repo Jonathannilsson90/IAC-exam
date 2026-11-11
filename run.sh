@@ -1,7 +1,10 @@
 #!/bin/bash
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "$0")" && pwd)"
+readonly SCRIPT_DIR
 INFRA_DIR="$SCRIPT_DIR/infra"
+ANSIBLE_DIR="$SCRIPT_DIR/ansible"
+
 
 # shellcheck disable=SC1091
 source "$SCRIPT_DIR/lib/common.sh"
@@ -59,7 +62,10 @@ while [ "$RUNNING" = true ]; do
     terraform -chdir="$INFRA_DIR" destroy -auto-approve
     ;;
 
-  4) ;;
+  4)
+    log "Running Ansible playbook"
+    (cd "$ANSIBLE_DIR" && ansible-playbook site.yml)
+  ;;
 
   5)
     ensure_venv
